@@ -46,26 +46,41 @@ export default function SignupPage() {
       return
     }
 
-    if (formData.password.length < 6) {
-      setLocalError('Password must be at least 6 characters')
+    if (formData.password.length < 8) {
+      setLocalError('Password must be at least 8 characters (include upper, lower, number, special character)')
       setIsLoading(false)
       return
     }
 
     try {
-      const response = await api.post('/auth/signup', {
-        name: formData.name,
+      const nameParts = formData.name.trim().split(/\s+/)
+      const firstName = nameParts[0] || ''
+      const lastName = nameParts.slice(1).join(' ') || ''
+      await api.post('/auth/register', {
+        first_name: firstName,
+        last_name: lastName,
         email: formData.email,
         password: formData.password,
       })
-      const { user, token } = response.data
-
+      const loginRes = await api.post('/auth/login', {
+        email: formData.email,
+        password: formData.password,
+      })
+      const { user: apiUser, access_token } = loginRes.data
+      const user = apiUser ? {
+        id: String(apiUser.id),
+        name: [apiUser.first_name, apiUser.last_name].filter(Boolean).join(' ') || apiUser.email,
+        email: apiUser.email,
+        gstin: apiUser.gstin,
+        businessName: apiUser.businessName,
+      } : null
       setUser(user)
-      setToken(token)
+      setToken(access_token)
 
       router.push('/dashboard')
     } catch (error: any) {
       const message =
+        error.response?.data?.error?.message ||
         error.response?.data?.message ||
         error.message ||
         'Signup failed. Please try again.'
@@ -138,7 +153,7 @@ export default function SignupPage() {
                 id="password"
                 type={showPassword ? 'text' : 'password'}
                 name="password"
-                placeholder="Create a password (min 6 characters)"
+                placeholder="Min 8 chars, include upper, lower, number, symbol"
                 value={formData.password}
                 onChange={handleChange}
                 disabled={isLoading}

@@ -28,15 +28,23 @@ export default function LoginPage() {
 
     try {
       const response = await api.post('/auth/login', { email, password })
-      const { user, token } = response.data
-
+      // Backend returns { user, access_token, refresh_token, expires_in } (already unwrapped by interceptor)
+      const { user: apiUser, access_token } = response.data
+      const user = apiUser ? {
+        id: String(apiUser.id),
+        name: [apiUser.first_name, apiUser.last_name].filter(Boolean).join(' ') || apiUser.email,
+        email: apiUser.email,
+        gstin: apiUser.gstin,
+        businessName: apiUser.businessName,
+      } : null
       setUser(user)
-      setToken(token)
+      setToken(access_token)
       setLoading(false)
 
       router.push('/dashboard')
     } catch (error: any) {
       const message =
+        error.response?.data?.error?.message ||
         error.response?.data?.message ||
         error.message ||
         'Login failed. Please try again.'

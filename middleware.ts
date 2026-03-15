@@ -2,18 +2,8 @@ import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
 export function middleware(request: NextRequest) {
-  const token = request.cookies.get('auth-storage')?.value
-
-  // Parse the token from the cookie (it's stored as JSON)
-  let isAuthenticated = false
-  try {
-    if (token) {
-      const tokenData = JSON.parse(token)
-      isAuthenticated = !!tokenData.state?.token
-    }
-  } catch (e) {
-    isAuthenticated = false
-  }
+  const tokenCookie = request.cookies.get('auth-token')?.value
+  const isAuthenticated = !!tokenCookie
 
   const { pathname } = request.nextUrl
 

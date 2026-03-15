@@ -26,9 +26,15 @@ api.interceptors.request.use(
   }
 )
 
-// Response interceptor - Handle errors
+// Response interceptor - Unwrap backend format { success, data, message } and handle errors
 api.interceptors.response.use(
-  (response) => response,
+  (response) => {
+    // Backend returns { success, data, message } - unwrap so callers get data directly
+    if (response.data && response.data.success === true && response.data.data !== undefined) {
+      response.data = response.data.data
+    }
+    return response
+  },
   (error) => {
     // Handle 401 Unauthorized - clear auth and redirect
     if (error.response?.status === 401) {
@@ -38,9 +44,10 @@ api.interceptors.response.use(
       }
     }
 
-    // Set error message in store if needed
-    if (error.response?.data?.message) {
-      useAuthStore.getState().setError(error.response.data.message)
+    // Backend errors: { success: false, error: { code, message, details } }
+    const errMessage = error.response?.data?.error?.message || error.response?.data?.message || error.message
+    if (errMessage) {
+      useAuthStore.getState().setError(errMessage)
     }
 
     return Promise.reject(error)
