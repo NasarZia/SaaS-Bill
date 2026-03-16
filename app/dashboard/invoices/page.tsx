@@ -322,13 +322,13 @@ export default function InvoicesPage() {
   }
 
   return (
-    <div className="space-y-6 p-4 md:p-6">
-      <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-        <div>
-          <h1 className="text-2xl md:text-3xl font-bold">Invoices</h1>
-          <p className="text-sm md:text-base text-muted-foreground">Manage your invoices</p>
+    <div className="space-y-7 p-4 md:p-8 bg-gradient-to-b from-background to-background/50">
+      <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
+        <div className="space-y-1">
+          <h1 className="text-4xl md:text-5xl font-bold text-foreground">Invoices</h1>
+          <p className="text-base md:text-lg text-muted-foreground">Manage your invoices and track payments</p>
         </div>
-        <Button className="w-full md:w-auto h-10 md:h-9" onClick={() => { 
+        <Button className="w-full md:w-auto h-11 md:h-10 font-semibold rounded-lg" onClick={() => { 
           setCreateOpen(true)
           setCreateForm({
             customer_id: '',
@@ -349,26 +349,26 @@ export default function InvoicesPage() {
         </Button>
       </div>
 
-      <div className="flex flex-col gap-3 md:flex-row md:gap-3">
+      <div className="flex flex-col gap-4 md:flex-row md:gap-4">
         <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+          <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground" />
           <Input
-            placeholder="Search invoices..."
-            className="pl-10 h-10 md:h-9"
+            placeholder="Search invoices by number, customer..."
+            className="pl-12 h-11 md:h-10 rounded-lg border-border/50 text-base"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
         </div>
-        <div className="flex gap-2 overflow-x-auto md:gap-2">
+        <div className="flex gap-2 overflow-x-auto md:gap-3">
           {(['all', 'draft', 'sent', 'paid', 'overdue'] as const).map((status) => (
             <Button
               key={status}
               variant={statusFilter === status ? 'default' : 'outline'}
               size="sm"
-              className="whitespace-nowrap h-10 md:h-9"
+              className="whitespace-nowrap h-10 font-semibold rounded-lg"
               onClick={() => setStatusFilter(status)}
             >
-              {status === 'all' && <Filter className="h-4 w-4 mr-1" />}
+              {status === 'all' && <Filter className="h-4 w-4 mr-1.5" />}
               {status.charAt(0).toUpperCase() + status.slice(1)}
             </Button>
           ))}
@@ -376,53 +376,53 @@ export default function InvoicesPage() {
       </div>
 
       {loading ? (
-        <Card className="p-8 text-center">
+        <Card className="p-12 text-center rounded-xl border-border/50 shadow-sm">
           <p className="text-muted-foreground">Loading invoices...</p>
         </Card>
       ) : filteredInvoices.length === 0 ? (
-        <Card className="p-8 text-center">
+        <Card className="p-12 text-center rounded-xl border-border/50 shadow-sm">
           <p className="text-muted-foreground">
             {invoices.length === 0 ? 'No invoices yet. Click New Invoice to create one.' : 'No invoices found.'}
           </p>
         </Card>
       ) : (
         <>
-          <div className="hidden md:block overflow-x-auto rounded-lg border">
+          <div className="hidden md:block overflow-x-auto rounded-xl border border-border/50 shadow-sm">
             <table className="w-full text-sm">
-              <thead className="border-b bg-muted/30">
+              <thead className="border-b border-border/50 bg-muted/30">
                 <tr>
-                  <th className="px-4 py-3 text-left font-medium text-muted-foreground">Invoice</th>
-                  <th className="px-4 py-3 text-left font-medium text-muted-foreground">Customer</th>
-                  <th className="px-4 py-3 text-left font-medium text-muted-foreground">Date</th>
-                  <th className="px-4 py-3 text-left font-medium text-muted-foreground">Amount</th>
-                  <th className="px-4 py-3 text-left font-medium text-muted-foreground">Status</th>
-                  <th className="px-4 py-3 text-left font-medium text-muted-foreground">Actions</th>
+                  <th className="px-5 py-4 text-left font-semibold text-muted-foreground uppercase text-xs tracking-wide">Invoice</th>
+                  <th className="px-5 py-4 text-left font-semibold text-muted-foreground uppercase text-xs tracking-wide">Customer</th>
+                  <th className="px-5 py-4 text-left font-semibold text-muted-foreground uppercase text-xs tracking-wide">Date</th>
+                  <th className="px-5 py-4 text-left font-semibold text-muted-foreground uppercase text-xs tracking-wide">Amount</th>
+                  <th className="px-5 py-4 text-left font-semibold text-muted-foreground uppercase text-xs tracking-wide">Status</th>
+                  <th className="px-5 py-4 text-left font-semibold text-muted-foreground uppercase text-xs tracking-wide">Actions</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody className="divide-y divide-border/30">
                 {filteredInvoices.map((inv) => (
-                  <tr key={inv.id} className="border-b hover:bg-muted/20">
-                    <td className="px-4 py-3 font-medium">{inv.invoice_number}</td>
-                    <td className="px-4 py-3">{inv.customer?.name ?? '—'}</td>
-                    <td className="px-4 py-3 text-muted-foreground">
+                  <tr key={inv.id} className="hover:bg-muted/20 transition-colors duration-200">
+                    <td className="px-5 py-4 font-semibold text-foreground">{inv.invoice_number}</td>
+                    <td className="px-5 py-4 text-foreground">{inv.customer?.name ?? '—'}</td>
+                    <td className="px-5 py-4 text-muted-foreground">
                       {typeof inv.invoice_date === 'string' ? inv.invoice_date.slice(0, 10) : inv.invoice_date}
                     </td>
-                    <td className="px-4 py-3 font-medium">₹{Number(inv.total_amount).toLocaleString('en-IN')}</td>
-                    <td className="px-4 py-3">
-                      <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${getStatusColor(inv.status, inv.is_paid)}`}>
+                    <td className="px-5 py-4 font-semibold text-foreground">₹{Number(inv.total_amount).toLocaleString('en-IN')}</td>
+                    <td className="px-5 py-4">
+                      <span className={`inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold ${getStatusColor(inv.status, inv.is_paid)}`}>
                         {getStatusLabel(inv.status, inv.is_paid)}
                       </span>
                     </td>
-                    <td className="px-4 py-3">
+                    <td className="px-5 py-4">
                       <div className="flex gap-2">
-                        <Button variant="ghost" size="icon-sm" onClick={() => setViewId(inv.id)} title="View">
-                          <Eye className="h-4 w-4" />
+                        <Button variant="ghost" size="icon" className="h-9 w-9 rounded-lg hover:bg-primary/10" onClick={() => setViewId(inv.id)} title="View">
+                          <Eye className="h-4 w-4 text-primary" />
                         </Button>
-                        <Button variant="ghost" size="icon-sm" onClick={() => downloadPdf(inv.id, inv.invoice_number)} title="Download PDF">
-                          <Download className="h-4 w-4" />
+                        <Button variant="ghost" size="icon" className="h-9 w-9 rounded-lg hover:bg-primary/10" onClick={() => downloadPdf(inv.id, inv.invoice_number)} title="Download PDF">
+                          <Download className="h-4 w-4 text-primary" />
                         </Button>
-                        <Button variant="ghost" size="icon-sm" onClick={() => deleteInvoice(inv.id, inv.status)} title="Delete (draft only)">
-                          <Trash2 className="h-4 w-4" />
+                        <Button variant="ghost" size="icon" className="h-9 w-9 rounded-lg hover:bg-destructive/10" onClick={() => deleteInvoice(inv.id, inv.status)} title="Delete (draft only)">
+                          <Trash2 className="h-4 w-4 text-destructive" />
                         </Button>
                       </div>
                     </td>
@@ -432,35 +432,35 @@ export default function InvoicesPage() {
             </table>
           </div>
 
-          <div className="md:hidden space-y-3">
+          <div className="md:hidden space-y-4">
             {filteredInvoices.map((inv) => (
-              <Card key={inv.id} className="p-4">
-                <div className="space-y-3">
-                  <div className="flex items-start justify-between gap-2">
-                    <div>
-                      <p className="font-semibold">{inv.invoice_number}</p>
+              <Card key={inv.id} className="p-5 rounded-xl border-border/50 shadow-sm hover:shadow-md transition-shadow duration-200">
+                <div className="space-y-4">
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="min-w-0 flex-1">
+                      <p className="font-semibold text-foreground">{inv.invoice_number}</p>
                       <p className="text-sm text-muted-foreground">{inv.customer?.name ?? '—'}</p>
                     </div>
-                    <span className={`inline-flex items-center rounded-full px-2 py-1 text-xs font-medium ${getStatusColor(inv.status, inv.is_paid)}`}>
+                    <span className={`inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold flex-shrink-0 ${getStatusColor(inv.status, inv.is_paid)}`}>
                       {getStatusLabel(inv.status, inv.is_paid)}
                     </span>
                   </div>
-                  <div className="space-y-1 pt-2 border-t">
+                  <div className="space-y-2 pt-3 border-t border-border/30">
                     <div className="flex justify-between text-sm">
                       <span className="text-muted-foreground">Date:</span>
-                      <span className="font-medium">{typeof inv.invoice_date === 'string' ? inv.invoice_date.slice(0, 10) : inv.invoice_date}</span>
+                      <span className="font-semibold text-foreground">{typeof inv.invoice_date === 'string' ? inv.invoice_date.slice(0, 10) : inv.invoice_date}</span>
                     </div>
                     <div className="flex justify-between text-sm">
                       <span className="text-muted-foreground">Amount:</span>
-                      <span className="font-semibold">₹{Number(inv.total_amount).toLocaleString('en-IN')}</span>
+                      <span className="font-semibold text-foreground">₹{Number(inv.total_amount).toLocaleString('en-IN')}</span>
                     </div>
                   </div>
-                  <div className="flex gap-2 pt-2 border-t">
-                    <Button variant="outline" size="sm" className="flex-1 h-8" onClick={() => setViewId(inv.id)}>
-                      <Eye className="h-3 w-3 mr-1" /> View
+                  <div className="flex gap-2 pt-3 border-t border-border/30">
+                    <Button variant="outline" size="sm" className="flex-1 h-9 rounded-lg font-medium" onClick={() => setViewId(inv.id)}>
+                      <Eye className="h-4 w-4 mr-1.5" /> View
                     </Button>
-                    <Button variant="outline" size="sm" className="flex-1 h-8" onClick={() => downloadPdf(inv.id, inv.invoice_number)}>
-                      <Download className="h-3 w-3 mr-1" /> PDF
+                    <Button variant="outline" size="sm" className="flex-1 h-9 rounded-lg font-medium" onClick={() => downloadPdf(inv.id, inv.invoice_number)}>
+                      <Download className="h-4 w-4 mr-1.5" /> PDF
                     </Button>
                   </div>
                 </div>
@@ -474,77 +474,79 @@ export default function InvoicesPage() {
       <Dialog open={viewId != null} onOpenChange={(open) => !open && setViewId(null)}>
         <DialogContent className="sm:max-w-4xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle>Invoice {viewData?.invoice_number}</DialogTitle>
+            <DialogTitle className="text-2xl font-bold">Invoice {viewData?.invoice_number}</DialogTitle>
           </DialogHeader>
           {viewData && (
-            <div className="p-4 md:p-8 bg-white space-y-6">
+            <div className="p-6 md:p-10 bg-white space-y-8">
               {/* Header Section with Logo */}
-              <div className="flex justify-between items-start pb-6 border-b">
+              <div className="flex justify-between items-start pb-8 border-b-2 border-slate-200">
                 <div className="flex-1">
                   {viewData.company?.logo_url && (
-                    <div className="mb-3">
+                    <div className="mb-4">
                       <img 
                         src={viewData.company.logo_url} 
                         alt="Company Logo" 
-                        className="h-20 w-auto object-contain" 
+                        className="h-24 w-auto object-contain" 
                         onError={(e) => { e.currentTarget.parentElement!.style.display = 'none' }} 
                       />
                     </div>
                   )}
-                  <div className="text-sm">
-                    <p className="font-bold text-lg">{viewData.company?.name || settings?.company_name}</p>
-                    <p className="text-gray-600 text-xs">{settings?.address_line1}</p>
-                    {settings?.address_line2 && <p className="text-gray-600 text-xs">{settings.address_line2}</p>}
-                    <p className="text-gray-600 text-xs">{settings?.city}, {settings?.state} - {settings?.postal_code}</p>
-                    {settings?.email && <p className="text-gray-600 text-xs">{settings.email}</p>}
-                    {settings?.phone && <p className="text-gray-600 text-xs">Phone: {settings.phone}</p>}
-                    {viewData.company?.gstin && <p className="text-gray-600 font-mono text-xs">GSTIN: {viewData.company.gstin}</p>}
-                    {settings?.pan && <p className="text-gray-600 font-mono text-xs">PAN: {settings.pan}</p>}
+                  <div className="text-sm space-y-1">
+                    <p className="font-bold text-xl text-slate-900">{viewData.company?.name || settings?.company_name}</p>
+                    <p className="text-slate-600">{settings?.address_line1}</p>
+                    {settings?.address_line2 && <p className="text-slate-600">{settings.address_line2}</p>}
+                    <p className="text-slate-600">{settings?.city}, {settings?.state} - {settings?.postal_code}</p>
+                    {settings?.email && <p className="text-slate-600">{settings.email}</p>}
+                    {settings?.phone && <p className="text-slate-600">Phone: {settings.phone}</p>}
+                    {viewData.company?.gstin && <p className="text-slate-600 font-mono text-xs">GSTIN: {viewData.company.gstin}</p>}
+                    {settings?.pan && <p className="text-slate-600 font-mono text-xs">PAN: {settings.pan}</p>}
                   </div>
                 </div>
-                <div className="text-right">
-                  <p className="text-2xl font-bold text-blue-600 mb-2">TAX INVOICE</p>
-                  <div className="text-xs space-y-1 text-gray-600">
-                    <div><span className="font-semibold">Invoice No:</span> {viewData.invoice_number}</div>
-                    <div><span className="font-semibold">Issue Date:</span> {viewData.invoice_date?.slice(0, 10)}</div>
-                    <div><span className="font-semibold">Due Date:</span> {viewData.due_date?.slice(0, 10)}</div>
+                <div className="text-right space-y-4">
+                  <div className="bg-gradient-to-br from-blue-600 to-blue-700 text-white px-6 py-3 rounded-lg">
+                    <p className="text-2xl font-bold">TAX INVOICE</p>
+                  </div>
+                  <div className="text-sm space-y-2 text-slate-700">
+                    <div className="flex justify-between gap-4"><span className="font-semibold">Invoice No:</span> <span className="font-mono">{viewData.invoice_number}</span></div>
+                    <div className="flex justify-between gap-4"><span className="font-semibold">Issue Date:</span> <span className="font-mono">{viewData.invoice_date?.slice(0, 10)}</span></div>
+                    <div className="flex justify-between gap-4"><span className="font-semibold">Due Date:</span> <span className="font-mono">{viewData.due_date?.slice(0, 10)}</span></div>
                   </div>
                 </div>
               </div>
 
               {/* Billing & Shipping Info */}
-              <div className="grid grid-cols-2 gap-4 pb-6 border-b text-sm">
-                <div>
-                  <p className="font-bold text-gray-700 mb-2">BILLED TO</p>
-                  <p className="font-semibold">{viewData.customer?.name}</p>
-                  {viewData.customer?.address && <p className="text-gray-600">{viewData.customer.address}</p>}
-                  {viewData.customer?.gstin && <p className="text-gray-600 font-mono">GSTIN: {viewData.customer.gstin}</p>}
+              <div className="grid grid-cols-2 gap-8 pb-8 border-b border-slate-200">
+                <div className="text-sm">
+                  <p className="font-bold text-slate-900 mb-3 uppercase tracking-wide text-xs">Billed To</p>
+                  <p className="font-semibold text-slate-900">{viewData.customer?.name}</p>
+                  {viewData.customer?.address && <p className="text-slate-600 mt-1">{viewData.customer.address}</p>}
+                  {viewData.customer?.gstin && <p className="text-slate-600 font-mono text-xs mt-1">GSTIN: {viewData.customer.gstin}</p>}
                 </div>
                 {(viewData.shipping?.address || viewData.company?.enable_shipping_on_invoice) && (
-                  <div>
-                    <p className="font-bold text-gray-700 mb-2">SHIPPED TO</p>
-                    <p className="font-semibold">{viewData.customer?.name}</p>
-                    {viewData.shipping?.address && <p className="text-gray-600">{viewData.shipping.address}</p>}
-                    {viewData.shipping?.city && <p className="text-gray-600">{viewData.shipping.city}, {viewData.shipping.state} - {viewData.shipping.postal_code}</p>}
+                  <div className="text-sm">
+                    <p className="font-bold text-slate-900 mb-3 uppercase tracking-wide text-xs">Shipped To</p>
+                    <p className="font-semibold text-slate-900">{viewData.customer?.name}</p>
+                    {viewData.shipping?.address && <p className="text-slate-600 mt-1">{viewData.shipping.address}</p>}
+                    {viewData.shipping?.city && <p className="text-slate-600 mt-1">{viewData.shipping.city}, {viewData.shipping.state} - {viewData.shipping.postal_code}</p>}
                   </div>
                 )}
               </div>
 
               {/* Items Table */}
               {viewData.items && viewData.items.length > 0 && (
-                <div className="pb-6 overflow-x-auto">
+                <div className="pb-8 overflow-x-auto">
                   <table className="w-full text-xs border-collapse">
                     <thead>
-                      <tr className="bg-gray-100">
-                        <th className="border p-2 text-left">Sr. No</th>
-                        <th className="border p-2 text-left">Item Description</th>
-                        <th className="border p-2 text-left">HSN/SAC</th>
-                        <th className="border p-2 text-right">Qty</th>
-                        <th className="border p-2 text-right">Unit Price</th>
-                        <th className="border p-2 text-right">Taxable Value</th>
-                        <th className="border p-2 text-right">GST %</th>
-                        <th className="border p-2 text-right">GST Amt</th>
-                        <th className="border p-2 text-right">Total</th>
+                      <tr className="bg-slate-100 border border-slate-200">
+                        <th className="border border-slate-200 px-3 py-3 text-left font-semibold text-slate-900">Sr. No</th>
+                        <th className="border border-slate-200 px-3 py-3 text-left font-semibold text-slate-900">Item Description</th>
+                        <th className="border border-slate-200 px-3 py-3 text-left font-semibold text-slate-900">HSN/SAC</th>
+                        <th className="border border-slate-200 px-3 py-3 text-right font-semibold text-slate-900">Qty</th>
+                        <th className="border border-slate-200 px-3 py-3 text-right font-semibold text-slate-900">Unit Price</th>
+                        <th className="border border-slate-200 px-3 py-3 text-right font-semibold text-slate-900">Taxable Value</th>
+                        <th className="border border-slate-200 px-3 py-3 text-right font-semibold text-slate-900">GST %</th>
+                        <th className="border border-slate-200 px-3 py-3 text-right font-semibold text-slate-900">GST Amt</th>
+                        <th className="border border-slate-200 px-3 py-3 text-right font-semibold text-slate-900">Total</th>
                       </tr>
                     </thead>
                     <tbody>

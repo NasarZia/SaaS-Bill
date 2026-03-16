@@ -18,7 +18,7 @@ export default function DashboardLayout({
         <AppSidebar />
         <SidebarInset>
           <AppHeader />
-          <main className="flex-1 overflow-y-auto bg-background">
+          <main className="flex-1 overflow-y-auto bg-gradient-to-b from-background via-background to-primary/2">
             {children}
           </main>
         </SidebarInset>
