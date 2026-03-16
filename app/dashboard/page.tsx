@@ -75,20 +75,20 @@ export default function DashboardHome() {
   }
 
   return (
-    <div className="space-y-6 p-4 md:p-6">
-      <div>
-        <h1 className="text-2xl md:text-3xl font-bold">Dashboard</h1>
-        <p className="text-sm md:text-base text-muted-foreground">Welcome back! Here&apos;s your business overview.</p>
+    <div className="space-y-7 p-4 md:p-8 bg-gradient-to-b from-background to-background/50">
+      <div className="space-y-2">
+        <h1 className="text-4xl md:text-5xl font-bold text-foreground">Dashboard</h1>
+        <p className="text-base md:text-lg text-muted-foreground">Welcome back! Here&apos;s your business overview.</p>
       </div>
 
       {loading ? (
-        <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-5 grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
           {[1, 2, 3, 4].map((i) => (
-            <Card key={i} className="p-4 md:p-6 h-28 animate-pulse" />
+            <Card key={i} className="p-5 md:p-7 h-32 animate-pulse rounded-xl" />
           ))}
         </div>
       ) : (
-        <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-5 grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
           <MetricCard
             title="Total Sales"
             value={formatRupee(totalPaidAmount)}
@@ -116,42 +116,42 @@ export default function DashboardHome() {
         </div>
       )}
 
-      <Card>
-        <div className="border-b px-4 py-3 md:px-6 md:py-4 flex items-center justify-between">
-          <h2 className="text-lg md:text-xl font-semibold">Recent Invoices</h2>
+      <Card className="rounded-xl border-border/50 shadow-sm">
+        <div className="border-b border-border/50 px-5 py-4 md:px-7 md:py-5 flex items-center justify-between bg-gradient-to-r from-card to-transparent">
+          <h2 className="text-xl md:text-2xl font-bold text-foreground">Recent Invoices</h2>
           <Link href="/dashboard/invoices">
-            <span className="text-sm text-primary hover:underline">View all</span>
+            <span className="text-sm font-semibold text-primary hover:text-primary/90 transition-colors duration-200">View all</span>
           </Link>
         </div>
 
         {loading ? (
-          <div className="p-8 text-center text-muted-foreground">Loading...</div>
+          <div className="p-12 text-center text-muted-foreground">Loading...</div>
         ) : invoices.length === 0 ? (
-          <div className="p-8 text-center text-muted-foreground">No invoices yet. Create one from Invoices.</div>
+          <div className="p-12 text-center text-muted-foreground">No invoices yet. Create one from Invoices.</div>
         ) : (
           <>
             <div className="hidden md:block overflow-x-auto">
               <table className="w-full text-sm">
-                <thead className="border-b bg-muted/30">
+                <thead className="border-b border-border/50 bg-muted/30">
                   <tr>
-                    <th className="px-4 py-3 text-left font-medium text-muted-foreground">Invoice</th>
-                    <th className="px-4 py-3 text-left font-medium text-muted-foreground">Customer</th>
-                    <th className="px-4 py-3 text-left font-medium text-muted-foreground">Date</th>
-                    <th className="px-4 py-3 text-left font-medium text-muted-foreground">Amount</th>
-                    <th className="px-4 py-3 text-left font-medium text-muted-foreground">Status</th>
+                    <th className="px-5 py-4 text-left font-semibold text-muted-foreground uppercase text-xs tracking-wide">Invoice</th>
+                    <th className="px-5 py-4 text-left font-semibold text-muted-foreground uppercase text-xs tracking-wide">Customer</th>
+                    <th className="px-5 py-4 text-left font-semibold text-muted-foreground uppercase text-xs tracking-wide">Date</th>
+                    <th className="px-5 py-4 text-left font-semibold text-muted-foreground uppercase text-xs tracking-wide">Amount</th>
+                    <th className="px-5 py-4 text-left font-semibold text-muted-foreground uppercase text-xs tracking-wide">Status</th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody className="divide-y divide-border/30">
                   {invoices.map((inv) => (
-                    <tr key={inv.id} className="border-b hover:bg-muted/20">
-                      <td className="px-4 py-3 font-medium">{inv.invoice_number}</td>
-                      <td className="px-4 py-3">{inv.customer?.name ?? '—'}</td>
-                      <td className="px-4 py-3 text-muted-foreground">
+                    <tr key={inv.id} className="hover:bg-muted/20 transition-colors duration-200">
+                      <td className="px-5 py-4 font-semibold text-foreground">{inv.invoice_number}</td>
+                      <td className="px-5 py-4 text-foreground">{inv.customer?.name ?? '—'}</td>
+                      <td className="px-5 py-4 text-muted-foreground">
                         {typeof inv.invoice_date === 'string' ? inv.invoice_date.slice(0, 10) : inv.invoice_date}
                       </td>
-                      <td className="px-4 py-3 font-medium">{formatRupee(Number(inv.total_amount))}</td>
-                      <td className="px-4 py-3">
-                        <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${getStatusClass(inv.status, inv.is_paid)}`}>
+                      <td className="px-5 py-4 font-semibold text-foreground">{formatRupee(Number(inv.total_amount))}</td>
+                      <td className="px-5 py-4">
+                        <span className={`inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold ${getStatusClass(inv.status, inv.is_paid)}`}>
                           {getStatusLabel(inv.status, inv.is_paid)}
                         </span>
                       </td>
@@ -160,16 +160,16 @@ export default function DashboardHome() {
                 </tbody>
               </table>
             </div>
-            <div className="md:hidden divide-y">
+            <div className="md:hidden divide-y divide-border/30">
               {invoices.map((inv) => (
                 <Link key={inv.id} href="/dashboard/invoices">
-                  <div className="px-4 py-4 space-y-2">
-                    <div className="flex items-start justify-between">
-                      <div>
-                        <p className="font-medium">{inv.invoice_number}</p>
+                  <div className="px-5 py-5 space-y-3 hover:bg-muted/20 transition-colors duration-200">
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="min-w-0 flex-1">
+                        <p className="font-semibold text-foreground">{inv.invoice_number}</p>
                         <p className="text-sm text-muted-foreground">{inv.customer?.name ?? '—'}</p>
                       </div>
-                      <span className={`inline-flex items-center rounded-full px-2 py-1 text-xs font-medium ${getStatusClass(inv.status, inv.is_paid)}`}>
+                      <span className={`inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold flex-shrink-0 ${getStatusClass(inv.status, inv.is_paid)}`}>
                         {getStatusLabel(inv.status, inv.is_paid)}
                       </span>
                     </div>
@@ -177,7 +177,7 @@ export default function DashboardHome() {
                       <p className="text-sm text-muted-foreground">
                         {typeof inv.invoice_date === 'string' ? inv.invoice_date.slice(0, 10) : inv.invoice_date}
                       </p>
-                      <p className="font-medium">{formatRupee(Number(inv.total_amount))}</p>
+                      <p className="font-semibold text-foreground">{formatRupee(Number(inv.total_amount))}</p>
                     </div>
                   </div>
                 </Link>

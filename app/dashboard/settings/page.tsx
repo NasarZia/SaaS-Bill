@@ -196,12 +196,12 @@ export default function SettingsPage() {
 
   if (loading) {
     return (
-      <div className="space-y-6 p-4 md:p-6">
-        <div>
-          <h1 className="text-2xl md:text-3xl font-bold">Settings</h1>
-          <p className="text-sm md:text-base text-muted-foreground">Manage your business details</p>
+      <div className="space-y-7 p-4 md:p-8 bg-gradient-to-b from-background to-background/50">
+        <div className="space-y-1">
+          <h1 className="text-4xl md:text-5xl font-bold text-foreground">Settings</h1>
+          <p className="text-base md:text-lg text-muted-foreground">Manage your business details</p>
         </div>
-        <Card className="p-8 text-center">
+        <Card className="p-12 text-center rounded-xl border-border/50 shadow-sm">
           <p className="text-muted-foreground">Loading settings...</p>
         </Card>
       </div>
@@ -209,20 +209,20 @@ export default function SettingsPage() {
   }
 
   return (
-    <div className="space-y-6 p-4 md:p-6">
-      <div>
-        <h1 className="text-2xl md:text-3xl font-bold">Settings</h1>
-        <p className="text-sm md:text-base text-muted-foreground">Manage your business details</p>
+    <div className="space-y-7 p-4 md:p-8 bg-gradient-to-b from-background to-background/50">
+      <div className="space-y-1">
+        <h1 className="text-4xl md:text-5xl font-bold text-foreground">Settings</h1>
+        <p className="text-base md:text-lg text-muted-foreground">Manage your business details</p>
       </div>
 
-      <Card>
-        <div className="border-b px-4 py-3 md:px-6 md:py-4">
-          <h2 className="text-lg md:text-xl font-semibold">Business Details</h2>
+      <Card className="rounded-xl border-border/50 shadow-sm">
+        <div className="border-b border-border/50 px-5 py-4 md:px-7 md:py-5 bg-gradient-to-r from-card to-transparent">
+          <h2 className="text-xl md:text-2xl font-bold text-foreground">Business Details</h2>
         </div>
 
-        <form onSubmit={handleSave} className="p-4 md:p-6 space-y-4 md:space-y-6">
-          {error && <p className="text-sm text-destructive bg-destructive/10 p-2 rounded">{error}</p>}
-          {success && <p className="text-sm text-green-600 bg-green-50 p-2 rounded">Settings saved.</p>}
+        <form onSubmit={handleSave} className="p-5 md:p-7 space-y-5 md:space-y-6">
+          {error && <div className="text-sm text-destructive bg-destructive/10 border border-destructive/20 p-3.5 rounded-lg font-medium">{error}</div>}
+          {success && <div className="text-sm text-green-700 bg-green-50 border border-green-200 p-3.5 rounded-lg font-medium dark:text-green-400 dark:bg-green-950 dark:border-green-900">Settings saved successfully.</div>}
 
           <div className="grid gap-2">
             <Label htmlFor="company_name" className="text-sm font-medium">Business Name</Label>

@@ -165,15 +165,15 @@ export default function CustomersPage() {
   }
 
   return (
-    <div className="space-y-6 p-4 md:p-6">
+    <div className="space-y-7 p-4 md:p-8 bg-gradient-to-b from-background to-background/50">
       {/* Header */}
-      <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-        <div>
-          <h1 className="text-2xl md:text-3xl font-bold">Customers</h1>
-          <p className="text-sm md:text-base text-muted-foreground">Manage your customer list</p>
+      <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
+        <div className="space-y-1">
+          <h1 className="text-4xl md:text-5xl font-bold text-foreground">Customers</h1>
+          <p className="text-base md:text-lg text-muted-foreground">Manage your customer list</p>
         </div>
-        <Button className="w-full md:w-auto h-10 md:h-9" onClick={handleOpenNew}>
-          <Plus className="h-4 w-4 mr-2" />
+        <Button className="w-full md:w-auto h-11 md:h-10 font-semibold rounded-lg" onClick={handleOpenNew}>
+          <Plus className="h-5 w-5 mr-2" />
           New Customer
         </Button>
       </div>
